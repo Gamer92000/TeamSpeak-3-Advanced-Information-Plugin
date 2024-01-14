@@ -1,257 +1,934 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>configui</class>
- <widget class="QDialog" name="configui">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>633</width>
-    <height>583</height>
-   </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>10000</width>
-    <height>10000</height>
-   </size>
-  </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
-  <property name="sizeGripEnabled">
-   <bool>false</bool>
-  </property>
-  <property name="modal">
-   <bool>false</bool>
-  </property>
-  <widget class="QWidget" name="verticalLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>453</width>
-     <height>137</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>5</number>
+  <class>configui</class>
+  <widget class="QWidget" name="configui">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>931</width>
+        <height>381</height>
+      </rect>
     </property>
-    <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+    <property name="windowTitle">
+      <string>Form</string>
     </property>
-    <property name="leftMargin">
-     <number>10</number>
-    </property>
-    <property name="topMargin">
-     <number>10</number>
-    </property>
-    <property name="rightMargin">
-     <number>10</number>
-    </property>
-    <property name="bottomMargin">
-     <number>10</number>
-    </property>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_0">
-      <item>
-       <widget class="QCheckBox" name="exampleSwitch">
-        <property name="font">
-         <font>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Example Switch</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_1">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Example Text</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="exampleText">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Example Number</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="exampleNumber">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinimumSize</enum>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+        <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>802</width>
+          <height>270</height>
+        </rect>
       </property>
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label_7">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <layout class="QVBoxLayout" name="outer_Layout">
+        <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>250</width>
-          <height>0</height>
-         </size>
+        <property name="leftMargin">
+          <number>10</number>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>7</pointsize>
-         </font>
+        <property name="topMargin">
+          <number>10</number>
         </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Qt Example Plugin by &lt;a href=&quot;https://julianimhof.de&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;JUL14N&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <property name="rightMargin">
+          <number>10</number>
         </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
+        <property name="bottomMargin">
+          <number>10</number>
         </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pbOk">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>&amp;OK</string>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pbCancel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>&amp;Cancel</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
+        <item>
+          <layout class="QHBoxLayout" name="topLayout">
+            <item>
+              <widget class="QCheckBox" name="clientBox">
+                <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="text">
+                  <string>Client Information</string>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="Line" name="line">
+                <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QCheckBox" name="channelBox">
+                <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="text">
+                  <string>Channel Information</string>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="Line" name="line_2">
+                <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QCheckBox" name="serverBox">
+                <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="text">
+                  <string>Server Information</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </item>
+        <item>
+          <layout class="QHBoxLayout" name="centerLayout">
+            <property name="topMargin">
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="QListWidget" name="clientList">
+                <property name="dragEnabled">
+                  <bool>true</bool>
+                </property>
+                <property name="dragDropMode">
+                  <enum>QAbstractItemView::InternalMove</enum>
+                </property>
+                <property name="defaultDropAction">
+                  <enum>Qt::TargetMoveAction</enum>
+                </property>
+                <item>
+                  <property name="text">
+                    <string>UNIQUE_IDENTIFIER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NICKNAME</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TALKING?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>INPUT_MUTED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>OUTPUT_MUTED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>OUTPUTONLY_MUTED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>INPUT_HARDWARE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>OUTPUT_HARDWARE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>IS_MUTED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>IS_RECORDING</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DATABASE_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CHANNEL_GROUP_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>SERVERGROUPS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>AWAY</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>AWAY_MESSAGE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TYPE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>FLAG_AVATAR</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TALK_POWER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TALK_REQUEST</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TALK_REQUEST_MSG</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DESCRIPTION</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>IS_TALKER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>IS_PRIORITY_SPEAKER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>UNREAD_MESSAGES</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NICKNAME_PHONETIC</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NEEDED_SERVERQUERY_VIEW_POWER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ICON_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>IS_CHANNEL_COMMANDER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>COUNTRY</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CHANNEL_GROUP_INHERITED_CHANNEL_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>BADGES</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MYTEAMSPEAK_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>INTEGRATIONS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ACTIVE_INTEGRATIONS_INFO</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MYTS_AVATAR</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>SIGNED_BADGES</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PERMISSION_HINTS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+              </widget>
+            </item>
+            <item>
+              <widget class="QListWidget" name="channelList">
+                <property name="dragEnabled">
+                  <bool>true</bool>
+                </property>
+                <property name="dragDropMode">
+                  <enum>QAbstractItemView::InternalMove</enum>
+                </property>
+                <property name="defaultDropAction">
+                  <enum>Qt::TargetMoveAction</enum>
+                </property>
+                <item>
+                  <property name="text">
+                    <string>NAME</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>TOPIC</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CODEC</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CODEC_QUALITY</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MAXCLIENTS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MAXFAMILYCLIENTS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ORDER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PERMANENT?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>SEMI_PERMANENT?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DEFAULT?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PASSWORD?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CODEC_LATENCY_FACTOR</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CODEC_IS_UNENCRYPTED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>UNIQUE_IDENTIFIER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MAXCLIENTS_UNLIMITED?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MAXFAMILYCLIENTS_UNLIMITED?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>MAXFAMILYCLIENTS_INHERITED?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ARE_SUBSCRIBED?</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NEEDED_TALK_POWER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>FORCED_SILENCE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NAME_PHONETIC</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ICON_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>BANNER_GFX_URL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>BANNER_MODE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PERMISSION_HINTS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+              </widget>
+            </item>
+            <item>
+              <widget class="QListWidget" name="serverList">
+                <property name="sizeAdjustPolicy">
+                  <enum>QAbstractScrollArea::AdjustIgnored</enum>
+                </property>
+                <property name="dragEnabled">
+                  <bool>true</bool>
+                </property>
+                <property name="dragDropMode">
+                  <enum>QAbstractItemView::InternalMove</enum>
+                </property>
+                <property name="defaultDropAction">
+                  <enum>Qt::TargetMoveAction</enum>
+                </property>
+                <item>
+                  <property name="text">
+                    <string>UNIQUE_IDENTIFIER</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NAME</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>WELCOMEMESSAGE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PLATFORM</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>VERSION</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CREATED</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CODEC_ENCRYPTION_MODE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTMESSAGE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTMESSAGE_MODE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DEFAULT_SERVER_GROUP</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DEFAULT_CHANNEL_GROUP</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>DEFAULT_CHANNEL_ADMIN_GROUP</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBANNER_URL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBANNER_GFX_URL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBANNER_GFX_INTERVAL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>PRIORITY_SPEAKER_DIMM_MODIFICATOR</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBUTTON_TOOLTIP</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBUTTON_URL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBUTTON_GFX_URL</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NAME_PHONETIC</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ICON_ID</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>RESERVED_SLOTS</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>ASK_FOR_PRIVILEGEKEY</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>HOSTBANNER_MODE</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>CHANNEL_TEMP_DELETE_DELAY_DEFAULT</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+                <item>
+                  <property name="text">
+                    <string>NICKNAME</string>
+                  </property>
+                  <property name="checkState">
+                    <enum>Checked</enum>
+                  </property>
+                </item>
+              </widget>
+            </item>
+          </layout>
+        </item>
+        <item>
+          <layout class="QHBoxLayout" name="bottomLayout">
+            <property name="topMargin">
+              <number>0</number>
+            </property>
+            <property name="rightMargin">
+              <number>0</number>
+            </property>
+            <property name="bottomMargin">
+              <number>0</number>
+            </property>
+            <item>
+              <widget class="QPushButton" name="reset_btn">
+                <property name="text">
+                  <string>Reset</string>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <spacer name="horizontalSpacer">
+                <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                  <size>
+                    <width>40</width>
+                    <height>20</height>
+                  </size>
+                </property>
+              </spacer>
+            </item>
+            <item>
+              <widget class="QPushButton" name="ok_btn">
+                <property name="text">
+                  <string>OK</string>
+                </property>
+                <property name="autoDefault">
+                  <bool>true</bool>
+                </property>
+                <property name="default">
+                  <bool>true</bool>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QPushButton" name="cancel_btn">
+                <property name="text">
+                  <string>Cancel</string>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QPushButton" name="apply_btn">
+                <property name="text">
+                  <string>Apply</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </item>
+      </layout>
+    </widget>
   </widget>
- </widget>
- <tabstops>
-  <tabstop>exampleSwitch</tabstop>
-  <tabstop>exampleText</tabstop>
-  <tabstop>exampleNumber</tabstop>
-  <tabstop>pbOk</tabstop>
-  <tabstop>pbCancel</tabstop>
- </tabstops>
- <resources/>
- <connections/>
+  <tabstops>
+    <tabstop>clientBox</tabstop>
+    <tabstop>channelBox</tabstop>
+    <tabstop>serverBox</tabstop>
+    <tabstop>clientList</tabstop>
+    <tabstop>channelList</tabstop>
+    <tabstop>serverList</tabstop>
+    <tabstop>ok_btn</tabstop>
+    <tabstop>cancel_btn</tabstop>
+  </tabstops>
+  <resources />
+  <connections />
 </ui>

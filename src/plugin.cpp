@@ -8,17 +8,20 @@
 #include <string.h>
 #include <assert.h>
 
+#include <QtCore/QDateTime>
+
 #include "teamspeak/public_errors.h"
 #include "teamspeak/public_errors_rare.h"
 #include "teamspeak/public_definitions.h"
 #include "teamspeak/public_rare_definitions.h"
-#include "teamspeak/clientlib_publicdefinitions.h"
 #include "ts3_functions.h"
 
 #include "plugin.h"
 #include "definitions.hpp"
 #include "helper.h"
 #include "config.h"
+#include "ui_config.h"
+#include "sharedHeader.h"
 
 static struct TS3Functions ts3Functions;
 static char *pluginID = NULL;
@@ -61,9 +64,10 @@ enum
 void ts3plugin_initMenus(struct PluginMenuItem ***menuItems, char **menuIcon)
 {
 	BEGIN_CREATE_MENUS(1);
-	CREATE_MENU_ITEM(PLUGIN_MENU_TYPE_GLOBAL, MENU_ID_GLOBAL_SETTINGS, "Settings", "");
+	CREATE_MENU_ITEM(PLUGIN_MENU_TYPE_GLOBAL, MENU_ID_GLOBAL_SETTINGS, "Settings", "Settings.svg");
 	END_CREATE_MENUS;
-	menuIcon = NULL;
+	*menuIcon = (char *)malloc(PLUGIN_MENU_BUFSZ * sizeof(char));
+	_strcpy(*menuIcon, PLUGIN_MENU_BUFSZ, "Information.svg");
 }
 
 void ts3plugin_onMenuItemEvent(uint64 serverConnectionHandlerID, enum PluginMenuType type, int menuItemID, uint64 selectedItemID)
@@ -152,28 +156,1115 @@ void ts3plugin_freeMemory(void *data)
 	free(data);
 }
 
-
 /*-------------------------- OTHER STUFF --------------------------*/
 /*
  * Those functions are not used in this demo plugin.
  */
 
-/* Plugin command keyword. Return NULL or "" if not used. */
-// const char *ts3plugin_commandKeyword()
-// {
-// 	return NULL;
-// }
+std::string resolveSetting(int type, const QString input, uint64 sCHID, anyID id = NULL)
+{
+	if (type == 0)
+	{ // SERVER
+		// public_defenitions
+		if (!QString::compare(input, QString("name"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_NAME, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Name:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("welcomemessage"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_WELCOMEMESSAGE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Welcome Message:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("platform"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_PLATFORM, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Platform:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("version"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_VERSION, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Version:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("created"), Qt::CaseInsensitive))
+		{
+			int val;
+			if (ts3Functions.getServerVariableAsInt(sCHID, VIRTUALSERVER_CREATED, &val) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			QDateTime timestamp;
+			timestamp.setTime_t(val);
+			QString value;
+			if (val == 0)
+				value = "The database carries no entry!";
+			else
+				value = timestamp.toString(Qt::SystemLocaleShortDate);
+			std::string ret = "[i]Created:[/i] " + std::string(value.toUtf8().constData());
+			return ret;
+		}
+		if (!QString::compare(input, QString("codec_encryption_mode"), Qt::CaseInsensitive))
+		{
+			int val;
+			if (ts3Functions.getServerVariableAsInt(sCHID, VIRTUALSERVER_CODEC_ENCRYPTION_MODE, &val) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Codec Encryption Mode:[/i] " + std::string(val == 0 ? "ENCRYPTION_PER_CHANNEL" : (val == 1 ? "ENCRYPTION_FORCED_OFF" : "ENCRYPTION_FORCED_ON"));
+			return ret;
+		}
+		if (!QString::compare(input, QString("unique_identifier"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_UNIQUE_IDENTIFIER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Unique Identifier:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		// public_rare_definitions
+		if (!QString::compare(input, QString("hostmessage"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTMESSAGE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostmessage:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostmessage_mode"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTMESSAGE_MODE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostmessage Mode:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("default_server_group"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_DEFAULT_SERVER_GROUP, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Default Server Group:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("default_channel_group"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_DEFAULT_CHANNEL_GROUP, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Default Channel Group:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("default_channel_admin_group"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_DEFAULT_CHANNEL_ADMIN_GROUP, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Default Channel Admin Group:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbanner_url"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBANNER_URL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbanner URL:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbanner_gfx_url"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBANNER_GFX_URL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbanner GFX URL:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbanner_gfx_interval"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBANNER_GFX_INTERVAL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbanner GFX Interval:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("priority_speaker_dimm_modificator"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_PRIORITY_SPEAKER_DIMM_MODIFICATOR, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Priority Speaker Dimm Modificator:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbutton_tooltip"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBUTTON_TOOLTIP, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbutton Tooltip:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbutton_url"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBUTTON_URL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbutton URL:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbutton_gfx_url"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBUTTON_GFX_URL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbutton GFX URL:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("name_phonetic"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_NAME_PHONETIC, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Name Phonetic:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("icon_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_ICON_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Icon ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("reserved_slots"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_RESERVED_SLOTS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Reserved Slots:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("ask_for_privilegekey"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_ASK_FOR_PRIVILEGEKEY, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Ask For Privilegekey:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("hostbanner_mode"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_HOSTBANNER_MODE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Hostbanner Mode:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("channel_temp_delete_delay_default"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_CHANNEL_TEMP_DELETE_DELAY_DEFAULT, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Channel Temp Delete Delay Default:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("nickname"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getServerVariableAsString(sCHID, VIRTUALSERVER_NICKNAME, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Nickname:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+	}
+	if (type == 1)
+	{ // CHANNEL
+		if (!QString::compare(input, QString("name"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_NAME, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Name:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("topic"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_TOPIC, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Topic:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("codec"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_CODEC, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Codec:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("codec_quality"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_CODEC_QUALITY, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Codec Quality:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("maxclients"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_MAXCLIENTS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Max Clients:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("maxfamilyclients"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_MAXFAMILYCLIENTS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Max Family Clients:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("order"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_ORDER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Order:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("permanent?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_PERMANENT, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Permanent:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("semi_permanent?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_SEMI_PERMANENT, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Semi Permanent:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("default?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_DEFAULT, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Default:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("password?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_PASSWORD, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Requires Password:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("codec_latency_factor"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_CODEC_LATENCY_FACTOR, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Codec Latency Factor:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("codec_is_unencrypted"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_CODEC_IS_UNENCRYPTED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Codec Is Unencrypted:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("unique_identifier"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_UNIQUE_IDENTIFIER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Unique Identifier:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		// public_rare_definitions
+		if (!QString::compare(input, QString("maxclients_unlimited?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_MAXCLIENTS_UNLIMITED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Maxclients Unlimited:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("maxfamilyclients_unlimited?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_MAXFAMILYCLIENTS_UNLIMITED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Maxfamilyclients Unlimited:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("maxfamilyclients_inherited?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_MAXFAMILYCLIENTS_INHERITED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Maxfamilyclients Inherited:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("are_subscribed?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FLAG_ARE_SUBSCRIBED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Are Subscribed:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("needed_talk_power"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_NEEDED_TALK_POWER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Needed Talk Power:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("forced_silence"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_FORCED_SILENCE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Forced Silence:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("name_phonetic"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_NAME_PHONETIC, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Name Phonetic:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("icon_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_ICON_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Icon ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("banner_gfx_url"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_BANNER_GFX_URL, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Banner GFX URL:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("banner_mode"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_BANNER_MODE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Banner Mode:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("permission_hints"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getChannelVariableAsString(sCHID, id, CHANNEL_PERMISSION_HINTS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Permission Hints:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+	}
+	if (type == 2)
+	{ // CLIENT
+		if (!QString::compare(input, QString("unique_identifier"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_UNIQUE_IDENTIFIER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Unique Identifier:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("nickname"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_NICKNAME, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Nickname:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("talking?"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_FLAG_TALKING, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Talking:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("input_muted"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_INPUT_MUTED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Input Muted:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("output_muted"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_OUTPUT_MUTED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Output Muted:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("outputonly_muted"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_OUTPUTONLY_MUTED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Output Only Muted:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("input_hardware"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_INPUT_HARDWARE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Input Hardware:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("output_hardware"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_OUTPUT_HARDWARE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Output Hardware:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("is_muted"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_IS_MUTED, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Locally Muted:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("is_recording"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_IS_RECORDING, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Recording:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		// public_rare_definitions
+		if (!QString::compare(input, QString("database_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_DATABASE_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Database ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("channel_group_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_CHANNEL_GROUP_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Channel Group ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("servergroups"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_SERVERGROUPS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Servergroups:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("away"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_AWAY, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Away:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("away_message"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_AWAY_MESSAGE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Away Message:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("type"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_TYPE, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Type:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("flag_avatar"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_FLAG_AVATAR, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Flag Avatar:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("talk_power"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_TALK_POWER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Talk Power:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("talk_request"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_TALK_REQUEST, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Talk Request:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("talk_request_msg"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_TALK_REQUEST_MSG, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Talk Request Message:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("description"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_DESCRIPTION, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Description:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("is_talker"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_IS_TALKER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Talker:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("is_priority_speaker"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_IS_PRIORITY_SPEAKER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Priority Speaker:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("unread_messages"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_UNREAD_MESSAGES, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Unread Messages:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("nickname_phonetic"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_NICKNAME_PHONETIC, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Nickname Phonetic:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("needed_serverquery_view_power"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_NEEDED_SERVERQUERY_VIEW_POWER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Needed Serverquery View Power:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("icon_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_ICON_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Icon ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("is_channel_commander"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_IS_CHANNEL_COMMANDER, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Is Channel Commander:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("country"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_COUNTRY, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Country:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("channel_group_inherited_channel_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_CHANNEL_GROUP_INHERITED_CHANNEL_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Channel Group Inherited Channel ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("badges"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_BADGES, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Badges:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("myteamspeak_id"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_MYTEAMSPEAK_ID, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]MyTeamSpeak ID:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("integrations"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_INTEGRATIONS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Integrations:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("active_integrations_info"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_ACTIVE_INTEGRATIONS_INFO, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Active Integrations Info:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("myts_avatar"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_MYTS_AVATAR, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]MyTS Avatar:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("signed_badges"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_SIGNED_BADGES, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Signed Badges:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+		if (!QString::compare(input, QString("permission_hints"), Qt::CaseInsensitive))
+		{
+			char *name = NULL;
+			if (ts3Functions.getClientVariableAsString(sCHID, id, CLIENT_PERMISSION_HINTS, &name) != ERROR_ok)
+			{
+				printf("Error getting variable.\n");
+				return std::string("");
+			}
+			std::string ret = "[i]Permission Hints:[/i] " + std::string(name);
+			free(name);
+			return ret;
+		}
+	}
+	return std::string("missing");
+}
 
-/* Plugin processes console command. Return 0 if plugin handled the command, 1 if not handled. */
-// int ts3plugin_processCommand(uint64 serverConnectionHandlerID, const char *command)
-// {
-// 	return 0; /* Plugin handled command */
-// }
-
-/* Client changed current server connection handler */
-// void ts3plugin_currentServerConnectionChanged(uint64 serverConnectionHandlerID)
-// {
-// }
+void resetConf()
+{
+	if (configObject)
+	{
+		configObject->close();
+		delete configObject;
+		configObject = NULL;
+	}
+	char configPath[PATH_BUFSIZE];
+	ts3Functions.getConfigPath(configPath, PATH_BUFSIZE);
+	configObject = new config(QString::fromUtf8(configPath) + CONFIG_FILE);
+	configObject->show();
+}
 
 /*
  * Implement the following three functions when the plugin should display a line in the server/channel/client info.
@@ -181,10 +1272,10 @@ void ts3plugin_freeMemory(void *data)
  */
 
 /* Static title shown in the left column in the info frame */
-// const char *ts3plugin_infoTitle()
-// {
-// 	return PLUGIN_NAME;
-// }
+const char *ts3plugin_infoTitle()
+{
+	return PLUGIN_NAME;
+}
 
 /*
  * Dynamic content shown in the right column in the info frame. Memory for the data string needs to be allocated in this
@@ -192,454 +1283,67 @@ void ts3plugin_freeMemory(void *data)
  * Check the parameter "type" if you want to implement this feature only for specific item types. Set the parameter
  * "data" to NULL to have the client ignore the info data.
  */
-// void ts3plugin_infoData(uint64 serverConnectionHandlerID, uint64 id, enum PluginItemType type, char **data)
-// {
-// 	*data = (char *)malloc(INFODATA_BUFSIZE * sizeof(char));	/* Must be allocated in the plugin! */
-// 	snprintf(*data, INFODATA_BUFSIZE, PLUGIN_DESCRIPTION);		/* bbCode is supported. HTML is not supported */
-// }
-
-/*
- * Plugin requests to be always automatically loaded by the TeamSpeak 3 client unless
- * the user manually disabled it in the plugin dialog.
- * This function is optional. If missing, no autoload is assumed.
- */
-// int ts3plugin_requestAutoload()
-// {
-// 	return 0; /* 1 = request autoloaded, 0 = do not request autoload */
-// }
-
-/*
- * Initialize plugin hotkeys. If your plugin does not use this feature, this function can be omitted.
- * Hotkeys require ts3plugin_registerPluginID and ts3plugin_freeMemory to be implemented.
- * This function is automatically called by the client after ts3plugin_init.
- */
-// void ts3plugin_initHotkeys(struct PluginHotkey ***hotkeys)
-// {
-// 	/* Register hotkeys giving a keyword and a description.
-// 	 * The keyword will be later passed to ts3plugin_onHotkeyEvent to identify which hotkey was triggered.
-// 	 * The description is shown in the clients hotkey dialog. */
-// 	BEGIN_CREATE_HOTKEYS(3); /* Create 3 hotkeys. Size must be correct for allocating memory. */
-// 	CREATE_HOTKEY("keyword_1", "Test hotkey 1");
-// 	CREATE_HOTKEY("keyword_2", "Test hotkey 2");
-// 	CREATE_HOTKEY("keyword_3", "Test hotkey 3");
-// 	END_CREATE_HOTKEYS;
-
-// 	/* The client will call ts3plugin_freeMemory to release all allocated memory */
-// }
-
-/************************** TeamSpeak callbacks ***************************/
-/*
- * Following functions are optional, feel free to remove unused callbacks.
- * See the clientlib documentation for details on each function.
- */
-
-/* Clientlib */
-
-// void ts3plugin_onConnectStatusChangeEvent(uint64 serverConnectionHandlerID, int newStatus, unsigned int errorNumber)
-// {
-// }
-
-// void ts3plugin_onNewChannelEvent(uint64 serverConnectionHandlerID, uint64 channelID, uint64 channelParentID)
-// {
-// }
-
-// void ts3plugin_onNewChannelCreatedEvent(uint64 serverConnectionHandlerID, uint64 channelID, uint64 channelParentID, anyID invokerID, const char *invokerName, const char *invokerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onDelChannelEvent(uint64 serverConnectionHandlerID, uint64 channelID, anyID invokerID, const char *invokerName, const char *invokerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onChannelMoveEvent(uint64 serverConnectionHandlerID, uint64 channelID, uint64 newChannelParentID, anyID invokerID, const char *invokerName, const char *invokerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onUpdateChannelEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onUpdateChannelEditedEvent(uint64 serverConnectionHandlerID, uint64 channelID, anyID invokerID, const char *invokerName, const char *invokerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onUpdateClientEvent(uint64 serverConnectionHandlerID, anyID clientID, anyID invokerID, const char *invokerName, const char *invokerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onClientMoveEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, const char *moveMessage)
-// {
-// }
-
-// void ts3plugin_onClientMoveSubscriptionEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility)
-// {
-// }
-
-// void ts3plugin_onClientMoveTimeoutEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, const char *timeoutMessage)
-// {
-// }
-
-// void ts3plugin_onClientMoveMovedEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID moverID, const char *moverName, const char *moverUniqueIdentifier, const char *moveMessage)
-// {
-// }
-
-// void ts3plugin_onClientKickFromChannelEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID kickerID, const char *kickerName, const char *kickerUniqueIdentifier, const char *kickMessage)
-// {
-// }
-
-// void ts3plugin_onClientKickFromServerEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID kickerID, const char *kickerName, const char *kickerUniqueIdentifier, const char *kickMessage)
-// {
-// }
-
-// void ts3plugin_onClientIDsEvent(uint64 serverConnectionHandlerID, const char *uniqueClientIdentifier, anyID clientID, const char *clientName)
-// {
-// }
-
-// void ts3plugin_onClientIDsFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onServerEditedEvent(uint64 serverConnectionHandlerID, anyID editerID, const char *editerName, const char *editerUniqueIdentifier)
-// {
-// }
-
-// void ts3plugin_onServerUpdatedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// int ts3plugin_onServerErrorEvent(uint64 serverConnectionHandlerID, const char *errorMessage, unsigned int error, const char *returnCode, const char *extraMessage)
-// {
-// 	/* A plugin could now check the returnCode with previously (when calling a function) remembered returnCodes and react accordingly */
-// 	/* In case of using a a plugin return code, the plugin can return:
-// 	 * 0: Client will continue handling this error (print to chat tab)
-// 	 * 1: Client will ignore this error, the plugin announces it has handled it */
-// 	return 0; /* If no plugin return code was used, the return value of this function is ignored */
-// }
-
-// void ts3plugin_onServerStopEvent(uint64 serverConnectionHandlerID, const char *shutdownMessage)
-// {
-// }
-
-// int ts3plugin_onTextMessageEvent(uint64 serverConnectionHandlerID, anyID targetMode, anyID toID, anyID fromID, const char *fromName, const char *fromUniqueIdentifier, const char *message, int ffIgnored)
-// {
-// 	return 0; /* 0 = handle normally, 1 = client will ignore the text message */
-// }
-
-// void ts3plugin_onTalkStatusChangeEvent(uint64 serverConnectionHandlerID, int status, int isReceivedWhisper, anyID clientID)
-// {
-// }
-
-// void ts3plugin_onConnectionInfoEvent(uint64 serverConnectionHandlerID, anyID clientID)
-// {
-// }
-
-// void ts3plugin_onServerConnectionInfoEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onChannelSubscribeEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onChannelSubscribeFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onChannelUnsubscribeEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onChannelUnsubscribeFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onChannelDescriptionUpdateEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onChannelPasswordChangedEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onPlaybackShutdownCompleteEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onSoundDeviceListChangedEvent(const char *modeID, int playOrCap)
-// {
-// }
-
-// void ts3plugin_onEditPlaybackVoiceDataEvent(uint64 serverConnectionHandlerID, anyID clientID, short *samples, int sampleCount, int channels)
-// {
-// }
-
-// void ts3plugin_onEditPostProcessVoiceDataEvent(uint64 serverConnectionHandlerID, anyID clientID, short *samples, int sampleCount, int channels, const unsigned int *channelSpeakerArray, unsigned int *channelFillMask)
-// {
-// }
-
-// void ts3plugin_onEditMixedPlaybackVoiceDataEvent(uint64 serverConnectionHandlerID, short *samples, int sampleCount, int channels, const unsigned int *channelSpeakerArray, unsigned int *channelFillMask)
-// {
-// }
-
-// void ts3plugin_onEditCapturedVoiceDataEvent(uint64 serverConnectionHandlerID, short *samples, int sampleCount, int channels, int *edited)
-// {
-// }
-
-// void ts3plugin_onCustom3dRolloffCalculationClientEvent(uint64 serverConnectionHandlerID, anyID clientID, float distance, float *volume)
-// {
-// }
-
-// void ts3plugin_onCustom3dRolloffCalculationWaveEvent(uint64 serverConnectionHandlerID, uint64 waveHandle, float distance, float *volume)
-// {
-// }
-
-// void ts3plugin_onUserLoggingMessageEvent(const char *logMessage, int logLevel, const char *logChannel, uint64 logID, const char *logTime, const char *completeLogString)
-// {
-// }
-
-// /* Clientlib rare */
-
-// void ts3plugin_onClientBanFromServerEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID kickerID, const char *kickerName, const char *kickerUniqueIdentifier, uint64 time, const char *kickMessage)
-// {
-// }
-
-// int ts3plugin_onClientPokeEvent(uint64 serverConnectionHandlerID, anyID fromClientID, const char *pokerName, const char *pokerUniqueIdentity, const char *message, int ffIgnored)
-// {
-// 	return 0; /* 0 = handle normally, 1 = client will ignore the poke */
-// }
-
-// void ts3plugin_onClientSelfVariableUpdateEvent(uint64 serverConnectionHandlerID, int flag, const char *oldValue, const char *newValue)
-// {
-// }
-
-// void ts3plugin_onFileListEvent(uint64 serverConnectionHandlerID, uint64 channelID, const char *path, const char *name, uint64 size, uint64 datetime, int type, uint64 incompletesize, const char *returnCode)
-// {
-// }
-
-// void ts3plugin_onFileListFinishedEvent(uint64 serverConnectionHandlerID, uint64 channelID, const char *path)
-// {
-// }
-
-// void ts3plugin_onFileInfoEvent(uint64 serverConnectionHandlerID, uint64 channelID, const char *name, uint64 size, uint64 datetime)
-// {
-// }
-
-// void ts3plugin_onServerGroupListEvent(uint64 serverConnectionHandlerID, uint64 serverGroupID, const char *name, int type, int iconID, int saveDB)
-// {
-// }
-
-// void ts3plugin_onServerGroupListFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onServerGroupByClientIDEvent(uint64 serverConnectionHandlerID, const char *name, uint64 serverGroupList, uint64 clientDatabaseID)
-// {
-// }
-
-// void ts3plugin_onServerGroupPermListEvent(uint64 serverConnectionHandlerID, uint64 serverGroupID, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onServerGroupPermListFinishedEvent(uint64 serverConnectionHandlerID, uint64 serverGroupID)
-// {
-// }
-
-// void ts3plugin_onServerGroupClientListEvent(uint64 serverConnectionHandlerID, uint64 serverGroupID, uint64 clientDatabaseID, const char *clientNameIdentifier, const char *clientUniqueID)
-// {
-// }
-
-// void ts3plugin_onChannelGroupListEvent(uint64 serverConnectionHandlerID, uint64 channelGroupID, const char *name, int type, int iconID, int saveDB)
-// {
-// }
-
-// void ts3plugin_onChannelGroupListFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onChannelGroupPermListEvent(uint64 serverConnectionHandlerID, uint64 channelGroupID, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onChannelGroupPermListFinishedEvent(uint64 serverConnectionHandlerID, uint64 channelGroupID)
-// {
-// }
-
-// void ts3plugin_onChannelPermListEvent(uint64 serverConnectionHandlerID, uint64 channelID, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onChannelPermListFinishedEvent(uint64 serverConnectionHandlerID, uint64 channelID)
-// {
-// }
-
-// void ts3plugin_onClientPermListEvent(uint64 serverConnectionHandlerID, uint64 clientDatabaseID, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onClientPermListFinishedEvent(uint64 serverConnectionHandlerID, uint64 clientDatabaseID)
-// {
-// }
-
-// void ts3plugin_onChannelClientPermListEvent(uint64 serverConnectionHandlerID, uint64 channelID, uint64 clientDatabaseID, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onChannelClientPermListFinishedEvent(uint64 serverConnectionHandlerID, uint64 channelID, uint64 clientDatabaseID)
-// {
-// }
-
-// void ts3plugin_onClientChannelGroupChangedEvent(uint64 serverConnectionHandlerID, uint64 channelGroupID, uint64 channelID, anyID clientID, anyID invokerClientID, const char *invokerName, const char *invokerUniqueIdentity)
-// {
-// }
-
-// int ts3plugin_onServerPermissionErrorEvent(uint64 serverConnectionHandlerID, const char *errorMessage, unsigned int error, const char *returnCode, unsigned int failedPermissionID)
-// {
-// 	return 0; /* See onServerErrorEvent for return code description */
-// }
-
-// void ts3plugin_onPermissionListGroupEndIDEvent(uint64 serverConnectionHandlerID, unsigned int groupEndID)
-// {
-// }
-
-// void ts3plugin_onPermissionListEvent(uint64 serverConnectionHandlerID, unsigned int permissionID, const char *permissionName, const char *permissionDescription)
-// {
-// }
-
-// void ts3plugin_onPermissionListFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onPermissionOverviewEvent(uint64 serverConnectionHandlerID, uint64 clientDatabaseID, uint64 channelID, int overviewType, uint64 overviewID1, uint64 overviewID2, unsigned int permissionID, int permissionValue, int permissionNegated, int permissionSkip)
-// {
-// }
-
-// void ts3plugin_onPermissionOverviewFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onServerGroupClientAddedEvent(uint64 serverConnectionHandlerID, anyID clientID, const char *clientName, const char *clientUniqueIdentity, uint64 serverGroupID, anyID invokerClientID, const char *invokerName, const char *invokerUniqueIdentity)
-// {
-// }
-
-// void ts3plugin_onServerGroupClientDeletedEvent(uint64 serverConnectionHandlerID, anyID clientID, const char *clientName, const char *clientUniqueIdentity, uint64 serverGroupID, anyID invokerClientID, const char *invokerName, const char *invokerUniqueIdentity)
-// {
-// }
-
-// void ts3plugin_onClientNeededPermissionsEvent(uint64 serverConnectionHandlerID, unsigned int permissionID, int permissionValue)
-// {
-// }
-
-// void ts3plugin_onClientNeededPermissionsFinishedEvent(uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onFileTransferStatusEvent(anyID transferID, unsigned int status, const char *statusMessage, uint64 remotefileSize, uint64 serverConnectionHandlerID)
-// {
-// }
-
-// void ts3plugin_onClientChatClosedEvent(uint64 serverConnectionHandlerID, anyID clientID, const char *clientUniqueIdentity)
-// {
-// }
-
-// void ts3plugin_onClientChatComposingEvent(uint64 serverConnectionHandlerID, anyID clientID, const char *clientUniqueIdentity)
-// {
-// }
-
-// void ts3plugin_onServerLogEvent(uint64 serverConnectionHandlerID, const char *logMsg)
-// {
-// }
-
-// void ts3plugin_onServerLogFinishedEvent(uint64 serverConnectionHandlerID, uint64 lastPos, uint64 fileSize)
-// {
-// }
-
-// void ts3plugin_onMessageListEvent(uint64 serverConnectionHandlerID, uint64 messageID, const char *fromClientUniqueIdentity, const char *subject, uint64 timestamp, int flagRead)
-// {
-// }
-
-// void ts3plugin_onMessageGetEvent(uint64 serverConnectionHandlerID, uint64 messageID, const char *fromClientUniqueIdentity, const char *subject, const char *message, uint64 timestamp)
-// {
-// }
-
-// void ts3plugin_onClientDBIDfromUIDEvent(uint64 serverConnectionHandlerID, const char *uniqueClientIdentifier, uint64 clientDatabaseID)
-// {
-// }
-
-// void ts3plugin_onClientNamefromUIDEvent(uint64 serverConnectionHandlerID, const char *uniqueClientIdentifier, uint64 clientDatabaseID, const char *clientNickName)
-// {
-// }
-
-// void ts3plugin_onClientNamefromDBIDEvent(uint64 serverConnectionHandlerID, const char *uniqueClientIdentifier, uint64 clientDatabaseID, const char *clientNickName)
-// {
-// }
-
-// void ts3plugin_onComplainListEvent(uint64 serverConnectionHandlerID, uint64 targetClientDatabaseID, const char *targetClientNickName, uint64 fromClientDatabaseID, const char *fromClientNickName, const char *complainReason, uint64 timestamp)
-// {
-// }
-
-// void ts3plugin_onBanListEvent(uint64 serverConnectionHandlerID, uint64 banid, const char *ip, const char *name, const char *uid, const char *mytsid, uint64 creationTime, uint64 durationTime, const char *invokerName,
-// 															uint64 invokercldbid, const char *invokeruid, const char *reason, int numberOfEnforcements, const char *lastNickName)
-// {
-// }
-
-// void ts3plugin_onClientServerQueryLoginPasswordEvent(uint64 serverConnectionHandlerID, const char *loginPassword)
-// {
-// }
-
-// void ts3plugin_onPluginCommandEvent(uint64 serverConnectionHandlerID, const char *pluginName, const char *pluginCommand, anyID invokerClientID, const char *invokerName, const char *invokerUniqueIdentity)
-// {
-// }
-
-// void ts3plugin_onIncomingClientQueryEvent(uint64 serverConnectionHandlerID, const char *commandText)
-// {
-// }
-
-// void ts3plugin_onServerTemporaryPasswordListEvent(uint64 serverConnectionHandlerID, const char *clientNickname, const char *uniqueClientIdentifier, const char *description, const char *password, uint64 timestampStart, uint64 timestampEnd, uint64 targetChannelID, const char *targetChannelPW)
-// {
-// }
-
-// /* Client UI callbacks */
-
-// /*
-//  * Called from client when an avatar image has been downloaded to or deleted from cache.
-//  * This callback can be called spontaneously or in response to ts3Functions.getAvatar()
-//  */
-// void ts3plugin_onAvatarUpdated(uint64 serverConnectionHandlerID, anyID clientID, const char *avatarPath)
-// {
-// }
-
-// /* This function is called if a plugin hotkey was pressed. Omit if hotkeys are unused. */
-// void ts3plugin_onHotkeyEvent(const char *keyword)
-// {
-// 	/* Identify the hotkey by keyword ("keyword_1", "keyword_2" or "keyword_3" in this example) and handle here... */
-// }
-
-// /* Called when recording a hotkey has finished after calling ts3Functions.requestHotkeyInputDialog */
-// void ts3plugin_onHotkeyRecordedEvent(const char *keyword, const char *key)
-// {
-// }
-
-// // This function receives your key Identifier you send to notifyKeyEvent and should return
-// // the friendly device name of the device this hotkey originates from. Used for display in UI.
-// const char *ts3plugin_keyDeviceName(const char *keyIdentifier)
-// {
-// 	return NULL;
-// }
-
-// // This function translates the given key identifier to a friendly key name for display in the UI
-// const char *ts3plugin_displayKeyText(const char *keyIdentifier)
-// {
-// 	return NULL;
-// }
-
-// // This is used internally as a prefix for hotkeys so we can store them without collisions.
-// // Should be unique across plugins.
-// const char *ts3plugin_keyPrefix()
-// {
-// 	return NULL;
-// }
-
-// /* Called when client custom nickname changed */
-// void ts3plugin_onClientDisplayNameChanged(uint64 serverConnectionHandlerID, anyID clientID, const char *displayName, const char *uniqueClientIdentifier)
-// {
-// }
+void ts3plugin_infoData(uint64 sCHID, uint64 id, enum PluginItemType type, char **data)
+{
+	std::string val = "";
+	switch (type)
+	{
+	case PLUGIN_SERVER:
+		if (!configObject->getConfigOption("server_enabled").toBool())
+		{
+			data = NULL;
+			return;
+		}
+		for (int i = 0; i < configObject->m_ui->serverList->count(); i++)
+		{
+			QString confName = "server_" + QString(i);
+			QString conf = configObject->getConfigOption(confName).toString();
+			if (configObject->getConfigOption(QString("server_") + conf).toInt() != 2)
+				continue;
+			else
+				val += resolveSetting(0, conf, sCHID) + "\n";
+		}
+		*data = (char *)malloc(strlen(val.c_str()) + 1);
+		strcpy(*data, val.c_str());
+		break;
+	case PLUGIN_CHANNEL:
+		if (!configObject->getConfigOption("channel_enabled").toBool())
+		{
+			data = NULL;
+			return;
+		}
+		for (int i = 0; i < configObject->m_ui->channelList->count(); i++)
+		{
+			QString confName = "channel_" + QString(i);
+			QString conf = configObject->getConfigOption(confName).toString();
+			if (configObject->getConfigOption(QString("channel_") + conf).toInt() != 2)
+				continue;
+			else
+				val += resolveSetting(1, conf, sCHID, id) + "\n";
+		}
+		*data = (char *)malloc(strlen(val.c_str()) + 1);
+		strcpy(*data, val.c_str());
+		break;
+	case PLUGIN_CLIENT:
+		if (!configObject->getConfigOption("client_enabled").toBool())
+		{
+			data = NULL;
+			return;
+		}
+		for (int i = 0; i < configObject->m_ui->clientList->count(); i++)
+		{
+			QString confName = "client_" + QString(i);
+			QString conf = configObject->getConfigOption(confName).toString();
+			if (configObject->getConfigOption(QString("client_") + conf).toInt() != 2)
+				continue;
+			else
+				val += resolveSetting(2, conf, sCHID, id) + "\n";
+		}
+		*data = (char *)malloc(strlen(val.c_str()) + 1);
+		strcpy(*data, val.c_str());
+		break;
+	default:
+		data = NULL; // Ignore
+		return;
+	}
+}
