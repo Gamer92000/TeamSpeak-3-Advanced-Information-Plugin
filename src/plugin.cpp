@@ -1184,7 +1184,7 @@ std::string resolveSetting(int type, const QString input, uint64 sCHID, anyID id
 				printf("Error getting variable.\n");
 				return std::string("");
 			}
-			std::string ret = "[i]MyTeamSpeak ID:[/i] " + std::string(name);
+			std::string ret = "[i]myTeamSpeak ID:[/i] " + std::string(name);
 			free(name);
 			return ret;
 		}
@@ -1220,7 +1220,7 @@ std::string resolveSetting(int type, const QString input, uint64 sCHID, anyID id
 				printf("Error getting variable.\n");
 				return std::string("");
 			}
-			std::string ret = "[i]MyTS Avatar:[/i] " + std::string(name);
+			std::string ret = "[i]myTS Avatar:[/i] " + std::string(name);
 			free(name);
 			return ret;
 		}
